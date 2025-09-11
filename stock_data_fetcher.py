@@ -66,8 +66,38 @@ class StockDataFetcher:
 
 if __name__ == "__main__":
     fetcher = StockDataFetcher()
-    print("Populating sample stock data...")
-    if fetcher.populate_sample_data():
-        print("Sample data populated successfully!")
+    
+    print("Stock Data Fetcher")
+    print("1. Use sample data (AAPL, GOOGL, MSFT, TSLA, AMZN - last 30 days)")
+    print("2. Enter custom symbols and date range")
+    
+    choice = input("Choose option (1 or 2): ").strip()
+    
+    if choice == '1':
+        print("Populating sample stock data...")
+        if fetcher.populate_sample_data():
+            print("Sample data populated successfully!")
+        else:
+            print("Failed to populate sample data.")
+    
+    elif choice == '2':
+        symbols_input = input("Enter stock symbols (comma-separated, e.g., AAPL,MSFT,GOOGL): ").strip()
+        symbols = [s.strip().upper() for s in symbols_input.split(',') if s.strip()]
+        
+        start_date_str = input("Enter start date (YYYY-MM-DD): ").strip()
+        end_date_str = input("Enter end date (YYYY-MM-DD): ").strip()
+        
+        try:
+            start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+            
+            print(f"Fetching data for {symbols} from {start_date_str} to {end_date_str}...")
+            if fetcher.fetch_stock_data(symbols, start_date, end_date):
+                print("Data populated successfully!")
+            else:
+                print("Failed to populate data.")
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+    
     else:
-        print("Failed to populate sample data.")
+        print("Invalid choice.")
