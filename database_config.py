@@ -5,8 +5,8 @@ class DatabaseConfig:
     def __init__(self):
         self.host = 'localhost'
         self.database = 'stock_portfolio'
-        self.user = 'root'  # Change as needed
-        self.password = 'Johnnyware@123'  # Change as needed
+        self.user = 'admin'  # Change as needed
+        self.password = 'password'  # Change as needed
     
     def get_connection(self):
         try:
