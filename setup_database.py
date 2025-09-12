@@ -7,8 +7,8 @@ def setup_database():
         # Connect to MySQL server (without specifying database)
         connection = mysql.connector.connect(
             host='localhost',
-            user='admin',  # Change as needed
-            password='password'   # Change as needed
+            user='root',  # Change as needed
+            password='Johnnyware@123'   # Change as needed
         )
         
         cursor = connection.cursor()
