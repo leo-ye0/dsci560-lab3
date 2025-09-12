@@ -28,16 +28,32 @@ def fill_data(method, interpolation_method):
                 df = df.bfill()
             else: # Forward filling
                 df = df.ffill()
+        
+        cursor = connection.cursor()
+
+        print('\nUpdating data...')
+        
+        cursor.execute('TRUNCATE TABLE stock_data')
+
+        for _, row in df.iterrows():
+                cursor.execute('''
+                    INSERT INTO stock_data 
+                    (id, stock_symbol, date, open_price, high_price, low_price, close_price, volume)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                ''', tuple(row))
+
+        connection.commit()
+        print('Database updated successfully!')
 
     except Error as e:
-        print(f"Error: {e}")
+        print(f'Error: {e}')
         return None
     finally:
         if connection.is_connected():
             connection.close()
 
 if __name__ == "__main__":
-    print("Filling missing data using ...")
+    print('Filling missing data using:')
     print('1. Interpolation')
     print('2. Backward filling')
     print('3. Forward filling')
@@ -67,5 +83,3 @@ if __name__ == "__main__":
         i_dict = {1:'linear', 2:'time', 3:'values', 4:'barycentric', 5:'akima'}
 
     df = fill_data(choice1, choice2)
-    # if df is not None:
-    #     print(df.head())
