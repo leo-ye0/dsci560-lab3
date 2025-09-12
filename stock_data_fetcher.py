@@ -64,9 +64,46 @@ class StockDataFetcher:
         
         return self.fetch_stock_data(symbols, start_date, end_date)
 
-if __name__ == "__main__":
+def main():
+    import sys
     fetcher = StockDataFetcher()
     
+    # Command line interface
+    if len(sys.argv) > 1:
+        action = sys.argv[1]
+        
+        if action == "sample":
+            print("Populating sample stock data...")
+            if fetcher.populate_sample_data():
+                print("Sample data populated successfully!")
+            else:
+                print("Failed to populate sample data.")
+        
+        elif action == "fetch" and len(sys.argv) == 5:
+            symbols = [s.strip().upper() for s in sys.argv[2].split(',')]
+            start_date_str = sys.argv[3]
+            end_date_str = sys.argv[4]
+            
+            try:
+                start_date = datetime.strptime(start_date_str, '%Y-%m-%d')
+                end_date = datetime.strptime(end_date_str, '%Y-%m-%d')
+                
+                print(f"Fetching data for {symbols} from {start_date_str} to {end_date_str}...")
+                if fetcher.fetch_stock_data(symbols, start_date, end_date):
+                    print("Data populated successfully!")
+                else:
+                    print("Failed to populate data.")
+            except ValueError:
+                print("Invalid date format. Please use YYYY-MM-DD.")
+        
+        else:
+            print("Usage:")
+            print("  python3 stock_data_fetcher.py sample")
+            print("  python3 stock_data_fetcher.py fetch <symbols> <start_date> <end_date>")
+            print("  Example: python3 stock_data_fetcher.py fetch AAPL,MSFT 2024-01-01 2024-12-01")
+        return
+    
+    # Interactive menu
     print("Stock Data Fetcher")
     print("1. Use sample data (AAPL, GOOGL, MSFT, TSLA, AMZN - last 30 days)")
     print("2. Enter custom symbols and date range")
@@ -101,3 +138,6 @@ if __name__ == "__main__":
     
     else:
         print("Invalid choice.")
+
+if __name__ == "__main__":
+    main()

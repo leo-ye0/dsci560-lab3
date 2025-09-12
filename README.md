@@ -16,24 +16,30 @@ A Python-based stock portfolio management system using MySQL and yfinance API.
 
 3. **Populate sample data:**
    ```bash
-   python stock_data_fetcher.py
+   python3 stock_data_fetcher.py sample
    ```
 
 ## Running the Code
 
 ### Stock Data Fetcher
 
-Run `python stock_data_fetcher.py` and choose between two options:
+**Command Line Interface:**
+```bash
+# Fetch sample data (AAPL, GOOGL, MSFT, TSLA, AMZN - last 30 days)
+python3 stock_data_fetcher.py sample
 
-**Option 1: Sample Data**
-- Uses predefined tech stocks: AAPL, GOOGL, MSFT, TSLA, AMZN
-- Fetches last 30 days of data
-- Quick setup for testing
+# Fetch custom stocks with date range
+python3 stock_data_fetcher.py fetch AAPL,MSFT,GOOGL 2024-01-01 2024-12-01
+```
 
-**Option 2: Custom Data**
-- Enter your own stock symbols (comma-separated, e.g., "AAPL,MSFT,NVDA")
-- Specify custom date range (YYYY-MM-DD format)
-- Example: Start date: 2024-01-01, End date: 2024-12-31
+**Interactive Menu:**
+```bash
+python3 stock_data_fetcher.py
+```
+
+**Options:**
+1. **Sample Data** - Predefined tech stocks (AAPL, GOOGL, MSFT, TSLA, AMZN) for last 30 days
+2. **Custom Data** - User-specified symbols and date ranges (YYYY-MM-DD format)
 
 ### Portfolio Manager
 
