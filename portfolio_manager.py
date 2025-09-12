@@ -1,6 +1,8 @@
 from database_config import DatabaseConfig
 from stock_data_fetcher import StockDataFetcher
 from datetime import datetime
+import sys
+import secrets
 
 class PortfolioManager:
     def __init__(self):
@@ -8,17 +10,18 @@ class PortfolioManager:
         self.stock_fetcher = StockDataFetcher()
     
     def create_portfolio(self, name):
-        """Create a new portfolio"""
+        """Create a new portfolio with ObjectId-style ID"""
         connection = self.db_config.get_connection()
         if not connection:
             return False
         
         cursor = connection.cursor()
         try:
-            cursor.execute("INSERT INTO portfolios (name) VALUES (%s)", (name,))
+            portfolio_id = secrets.token_hex(12)  # Generate 24-char hex ID
+            cursor.execute("INSERT INTO portfolios (id, name) VALUES (%s, %s)", (portfolio_id, name))
             connection.commit()
-            print(f"Portfolio '{name}' created successfully!")
-            return True
+            print(f"Portfolio '{name}' created with ID: {portfolio_id}")
+            return portfolio_id
         except Exception as e:
             print(f"Error creating portfolio: {e}")
             return False
@@ -167,6 +170,30 @@ class PortfolioManager:
 def main():
     manager = PortfolioManager()
     
+    # Command line interface
+    if len(sys.argv) > 1:
+        action = sys.argv[1]
+        
+        if action == "create" and len(sys.argv) == 3:
+            manager.create_portfolio(sys.argv[2])
+        elif action == "add" and len(sys.argv) == 4:
+            manager.add_stock_to_portfolio(sys.argv[2], sys.argv[3])
+        elif action == "remove" and len(sys.argv) == 4:
+            manager.remove_stock_from_portfolio(sys.argv[2], sys.argv[3])
+        elif action == "display":
+            manager.display_portfolios()
+        elif action == "fetch" and len(sys.argv) == 5:
+            manager.fetch_portfolio_data(sys.argv[2], sys.argv[3], sys.argv[4])
+        else:
+            print("Usage:")
+            print("  python portfolio_manager.py create <name>")
+            print("  python portfolio_manager.py add <portfolio_name> <stock>")
+            print("  python portfolio_manager.py remove <portfolio_name> <stock>")
+            print("  python portfolio_manager.py display")
+            print("  python portfolio_manager.py fetch <portfolio_name> <start_date> <end_date>")
+        return
+    
+    # Interactive menu
     while True:
         print("\n=== PORTFOLIO MANAGER ===")
         print("1. Create Portfolio")

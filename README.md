@@ -37,13 +37,31 @@ Run `python stock_data_fetcher.py` and choose between two options:
 
 ### Portfolio Manager
 
-Run the portfolio manager:
+**Command Line Interface:**
+```bash
+# Create portfolio (generates ObjectId like 65bb27be57e671a76824d4e6)
+python portfolio_manager.py create "My Portfolio"
+
+# Add stock to portfolio
+python portfolio_manager.py add "My Portfolio" AAPL
+
+# Remove stock from portfolio
+python portfolio_manager.py remove "My Portfolio" AAPL
+
+# Display all portfolios
+python portfolio_manager.py display
+
+# Fetch portfolio data
+python portfolio_manager.py fetch "My Portfolio" 2024-01-01 2024-12-31
+```
+
+**Interactive Menu:**
 ```bash
 python portfolio_manager.py
 ```
 
 ### Menu Options:
-1. **Create Portfolio** - Create a new portfolio with a custom name
+1. **Create Portfolio** - Create a new portfolio with ObjectId-style ID
 2. **Add Stock to Portfolio** - Add a validated stock symbol to an existing portfolio
 3. **Remove Stock from Portfolio** - Remove a stock from an existing portfolio
 4. **Display All Portfolios** - Show all portfolios with creation dates and stock lists
@@ -60,6 +78,6 @@ python portfolio_manager.py
 
 ## Database Schema
 
-- `portfolios`: Store portfolio information
+- `portfolios`: Store portfolio information with ObjectId-style IDs (24-char hex)
 - `portfolio_stocks`: Link stocks to portfolios
 - `stock_data`: Store historical stock price data

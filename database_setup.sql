@@ -2,9 +2,14 @@
 CREATE DATABASE IF NOT EXISTS stock_portfolio;
 USE stock_portfolio;
 
+-- Drop existing tables to recreate with new schema
+DROP TABLE IF EXISTS portfolio_stocks;
+DROP TABLE IF EXISTS stock_data;
+DROP TABLE IF EXISTS portfolios;
+
 -- Table for portfolios
 CREATE TABLE portfolios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id VARCHAR(24) PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -12,7 +17,7 @@ CREATE TABLE portfolios (
 -- Table for stocks in portfolios
 CREATE TABLE portfolio_stocks (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    portfolio_id INT,
+    portfolio_id VARCHAR(24),
     stock_symbol VARCHAR(10) NOT NULL,
     added_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (portfolio_id) REFERENCES portfolios(id) ON DELETE CASCADE,
