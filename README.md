@@ -39,7 +39,7 @@ Run `python stock_data_fetcher.py` and choose between two options:
 
 **Command Line Interface:**
 ```bash
-# Create portfolio (generates ObjectId like 65bb27be57e671a76824d4e6)
+# Create portfolio
 python portfolio_manager.py create "My Portfolio"
 
 # Add stock to portfolio
@@ -78,6 +78,6 @@ python portfolio_manager.py
 
 ## Database Schema
 
-- `portfolios`: Store portfolio information with ObjectId-style IDs (24-char hex)
+- `portfolios`: Store portfolio information with ObjectId-style IDs
 - `portfolio_stocks`: Link stocks to portfolios
 - `stock_data`: Store historical stock price data
