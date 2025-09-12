@@ -1,34 +1,34 @@
 import mysql.connector
-from mysql.connector import Error
 
 def setup_database():
-    """Setup the database and tables"""
     try:
-        # Connect to MySQL server (without specifying database)
+        # Connect without specifying database first
         connection = mysql.connector.connect(
             host='localhost',
-            user='admin',  # Change as needed
-            password='password'   # Change as needed
+            user='admin',
+            password='password'
         )
         
         cursor = connection.cursor()
         
-        # Read and execute SQL setup file
-        with open('database_setup.sql', 'r') as file:
-            sql_commands = file.read().split(';')
-            
-        for command in sql_commands:
+        # Read and execute SQL file
+        with open('database_setup.sql', 'r') as f:
+            sql_content = f.read()
+        
+        # Split by semicolon and execute each command
+        commands = sql_content.split(';')
+        for command in commands:
             command = command.strip()
             if command:
                 cursor.execute(command)
         
         connection.commit()
-        print("Database and tables created successfully!")
+        print("Database setup completed successfully!")
         
-    except Error as e:
+    except Exception as e:
         print(f"Error setting up database: {e}")
     finally:
-        if connection.is_connected():
+        if connection:
             cursor.close()
             connection.close()
 
