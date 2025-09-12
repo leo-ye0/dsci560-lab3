@@ -6,12 +6,23 @@ USE stock_portfolio;
 DROP TABLE IF EXISTS portfolio_stocks;
 DROP TABLE IF EXISTS stock_data;
 DROP TABLE IF EXISTS portfolios;
+DROP TABLE IF EXISTS users;
+
+-- Table for users
+CREATE TABLE users (
+    id VARCHAR(24) PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 
 -- Table for portfolios
 CREATE TABLE portfolios (
     id VARCHAR(24) PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE,
-    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    user_id VARCHAR(24) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_user_portfolio (user_id, name)
 );
 
 -- Table for stocks in portfolios

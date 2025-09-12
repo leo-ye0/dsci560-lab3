@@ -39,45 +39,53 @@ Run `python stock_data_fetcher.py` and choose between two options:
 
 **Command Line Interface:**
 ```bash
-# Create portfolio
-python portfolio_manager.py create "My Portfolio"
+# Create user
+python3 portfolio_manager.py create-user john
 
-# Add stock to portfolio
-python portfolio_manager.py add "My Portfolio" AAPL
+# Create portfolio for user
+python3 portfolio_manager.py create-portfolio john "My Portfolio"
 
-# Remove stock from portfolio
-python portfolio_manager.py remove "My Portfolio" AAPL
+# Add stock to user's portfolio
+python3 portfolio_manager.py add john "My Portfolio" AAPL
 
-# Display all portfolios
-python portfolio_manager.py display
+# Remove stock from user's portfolio
+python3 portfolio_manager.py remove john "My Portfolio" AAPL
 
-# Fetch portfolio data
-python portfolio_manager.py fetch "My Portfolio" 2024-01-01 2024-12-31
+# Display user's portfolios
+python3 portfolio_manager.py display john
+
+# Fetch portfolio data for user
+python3 portfolio_manager.py fetch john "My Portfolio" 2024-01-01 2024-12-31
 ```
 
 **Interactive Menu:**
 ```bash
-python portfolio_manager.py
+python3 portfolio_manager.py
 ```
 
 ### Menu Options:
-1. **Create Portfolio** - Create a new portfolio with ObjectId-style ID
-2. **Add Stock to Portfolio** - Add a validated stock symbol to an existing portfolio
-3. **Remove Stock from Portfolio** - Remove a stock from an existing portfolio
-4. **Display All Portfolios** - Show all portfolios with creation dates and stock lists
-5. **Fetch Portfolio Data** - Download historical data for all stocks in a portfolio
-6. **Exit** - Close the application
+1. **Create User** - Create a new user with unique ID
+2. **List Users** - Display all registered users
+3. **Create Portfolio** - Create a new portfolio for a user
+4. **Add Stock to Portfolio** - Add a validated stock symbol to a user's portfolio
+5. **Remove Stock from Portfolio** - Remove a stock from a user's portfolio
+6. **Display User Portfolios** - Show all portfolios for a specific user
+7. **Fetch Portfolio Data** - Download historical data for all stocks in a user's portfolio
+8. **Exit** - Close the application
 
 ## Features
 
-- Create and manage multiple portfolios
-- Add/remove stocks with validation
-- Fetch historical stock data for portfolios
-- Display all portfolios with creation dates and stock lists
-- Validate stock symbols using yfinance API
+- **User Management** - Create users with unique IDs and usernames
+- **Multi-User Support** - Each user can have multiple portfolios
+- **Portfolio Management** - Create and manage portfolios per user
+- **Stock Operations** - Add/remove stocks with validation
+- **Data Fetching** - Fetch historical stock data for user portfolios
+- **Portfolio Display** - Show user-specific portfolios with creation dates and stock lists
+- **Stock Validation** - Validate stock symbols using yfinance API
 
 ## Database Schema
 
-- `portfolios`: Store portfolio information with ObjectId-style IDs
+- `users`: Store user information with unique IDs and usernames
+- `portfolios`: Store portfolio information linked to users
 - `portfolio_stocks`: Link stocks to portfolios
 - `stock_data`: Store historical stock price data
