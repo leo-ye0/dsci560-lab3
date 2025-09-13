@@ -62,7 +62,7 @@ python3 stock_data_fillna.py 3
 python3 stock_data_fillna.py
 ```
 
-**Options for filling in missing data** 
+**Options for filling in missing data:** 
 1. **Interpolation**
 2. **Backward filling**
 3. **Forward filling**
