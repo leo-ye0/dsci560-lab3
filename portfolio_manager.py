@@ -79,6 +79,11 @@ class PortfolioManager:
             print(f"Example: python3 portfolio_manager.py add {username} \"{portfolio_name}\" TSLA")
             return False
         
+        # Validate stock symbol with yfinance API
+        if not self.stock_fetcher.validate_stock(stock_symbol):
+            print(f"Invalid stock symbol: {stock_symbol.upper()}")
+            return False
+        
         # Check if stock data exists in database
         connection = self.db_config.get_connection()
         if not connection:
@@ -122,7 +127,7 @@ class PortfolioManager:
                 (portfolio_id, stock_symbol.upper())
             )
             connection.commit()
-            print(f"Stock {stock_symbol.upper()} added to '{portfolio_name}' for user '{username}'!")
+            print(f"Stock {stock_symbol.upper()} added successfully to '{portfolio_name}' for user '{username}'!")
             return True
             
         except Exception as e:
