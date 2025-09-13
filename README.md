@@ -94,7 +94,8 @@ python3 portfolio_manager.py
 - **Stock Operations** - Add/remove stocks with validation
 - **Data Fetching** - Fetch historical stock data for user portfolios
 - **Portfolio Display** - Show user-specific portfolios with creation dates and stock lists
-- **Stock Validation** - Validate stock symbols using yfinance API
+- **Stock Validation** - Only allow stocks with fetched data in database
+- **Data Integrity** - Users can only add stocks that have historical data available
 
 ## Database Schema
 

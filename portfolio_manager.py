@@ -78,10 +78,25 @@ class PortfolioManager:
             print(f"Error: Only one stock symbol allowed. Use separate commands for multiple stocks.")
             print(f"Example: python3 portfolio_manager.py add {username} \"{portfolio_name}\" TSLA")
             return False
-            
-        if not self.stock_fetcher.validate_stock(stock_symbol):
-            print(f"Invalid stock symbol: {stock_symbol}")
+        
+        # Check if stock data exists in database
+        connection = self.db_config.get_connection()
+        if not connection:
             return False
+        
+        cursor = connection.cursor()
+        try:
+            cursor.execute("SELECT DISTINCT stock_symbol FROM stock_data WHERE stock_symbol = %s", 
+                         (stock_symbol.upper(),))
+            if not cursor.fetchone():
+                print(f"Stock {stock_symbol.upper()} not found in database. Please fetch stock data first.")
+                return False
+        except Exception as e:
+            print(f"Error checking stock data: {e}")
+            return False
+        finally:
+            cursor.close()
+            connection.close()
         
         user_id = self.user_manager.get_user_by_username(username)
         if not user_id:
