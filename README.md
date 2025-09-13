@@ -54,6 +54,9 @@ python3 portfolio_manager.py list-users
 # Create portfolio for user
 python3 portfolio_manager.py create-portfolio john "My Portfolio"
 
+# Remove portfolio from user
+python3 portfolio_manager.py remove-portfolio john "My Portfolio"
+
 # Add stock to user's portfolio
 python3 portfolio_manager.py add john "My Portfolio" AAPL
 
@@ -76,11 +79,12 @@ python3 portfolio_manager.py
 1. **Create User** - Create a new user with unique ID
 2. **List Users** - Display all registered users
 3. **Create Portfolio** - Create a new portfolio for a user
-4. **Add Stock to Portfolio** - Add a validated stock symbol to a user's portfolio
-5. **Remove Stock from Portfolio** - Remove a stock from a user's portfolio
-6. **Display User Portfolios** - Show all portfolios for a specific user
-7. **Fetch Portfolio Data** - Download historical data for all stocks in a user's portfolio
-8. **Exit** - Close the application
+4. **Remove Portfolio** - Remove a portfolio from a user
+5. **Add Stock to Portfolio** - Add a validated stock symbol to a user's portfolio
+6. **Remove Stock from Portfolio** - Remove a stock from a user's portfolio
+7. **Display User Portfolios** - Show all portfolios for a specific user
+8. **Fetch Portfolio Data** - Download historical data for all stocks in a user's portfolio
+9. **Exit** - Close the application
 
 ## Features
 

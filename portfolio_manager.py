@@ -40,6 +40,37 @@ class PortfolioManager:
             cursor.close()
             connection.close()
     
+    def remove_portfolio(self, username, portfolio_name):
+        """Remove a portfolio for a user"""
+        user_id = self.user_manager.get_user_by_username(username)
+        if not user_id:
+            print(f"User '{username}' not found!")
+            return False
+        
+        connection = self.db_config.get_connection()
+        if not connection:
+            return False
+        
+        cursor = connection.cursor()
+        try:
+            cursor.execute("DELETE FROM portfolios WHERE user_id = %s AND name = %s", 
+                         (user_id, portfolio_name))
+            
+            if cursor.rowcount > 0:
+                connection.commit()
+                print(f"Portfolio '{portfolio_name}' removed for user '{username}'!")
+                return True
+            else:
+                print(f"Portfolio '{portfolio_name}' not found for user '{username}'!")
+                return False
+                
+        except Exception as e:
+            print(f"Error removing portfolio: {e}")
+            return False
+        finally:
+            cursor.close()
+            connection.close()
+    
     def add_stock_to_portfolio(self, username, portfolio_name, stock_symbol):
         """Add stock to portfolio with validation"""
         # Check for comma-separated symbols
@@ -213,6 +244,8 @@ def main():
             manager.user_manager.list_users()
         elif action == "create-portfolio" and len(sys.argv) == 4:
             manager.create_portfolio(sys.argv[2], sys.argv[3])
+        elif action == "remove-portfolio" and len(sys.argv) == 4:
+            manager.remove_portfolio(sys.argv[2], sys.argv[3])
         elif action == "add" and len(sys.argv) == 5:
             manager.add_stock_to_portfolio(sys.argv[2], sys.argv[3], sys.argv[4])
         elif action == "remove" and len(sys.argv) == 5:
@@ -226,6 +259,7 @@ def main():
             print("  python3 portfolio_manager.py create-user <username>")
             print("  python3 portfolio_manager.py list-users")
             print("  python3 portfolio_manager.py create-portfolio <username> <portfolio_name>")
+            print("  python3 portfolio_manager.py remove-portfolio <username> <portfolio_name>")
             print("  python3 portfolio_manager.py add <username> <portfolio_name> <stock>")
             print("  python3 portfolio_manager.py remove <username> <portfolio_name> <stock>")
             print("  python3 portfolio_manager.py display <username>")
@@ -238,13 +272,14 @@ def main():
         print("1. Create User")
         print("2. List Users")
         print("3. Create Portfolio")
-        print("4. Add Stock to Portfolio")
-        print("5. Remove Stock from Portfolio")
-        print("6. Display User Portfolios")
-        print("7. Fetch Portfolio Data")
-        print("8. Exit")
+        print("4. Remove Portfolio")
+        print("5. Add Stock to Portfolio")
+        print("6. Remove Stock from Portfolio")
+        print("7. Display User Portfolios")
+        print("8. Fetch Portfolio Data")
+        print("9. Exit")
         
-        choice = input("\nEnter your choice (1-8): ").strip()
+        choice = input("\nEnter your choice (1-9): ").strip()
         
         if choice == '1':
             username = input("Enter username: ").strip()
@@ -263,23 +298,29 @@ def main():
         elif choice == '4':
             username = input("Enter username: ").strip()
             portfolio = input("Enter portfolio name: ").strip()
-            stock = input("Enter stock symbol: ").strip()
-            if username and portfolio and stock:
-                manager.add_stock_to_portfolio(username, portfolio, stock)
+            if username and portfolio:
+                manager.remove_portfolio(username, portfolio)
         
         elif choice == '5':
             username = input("Enter username: ").strip()
             portfolio = input("Enter portfolio name: ").strip()
             stock = input("Enter stock symbol: ").strip()
             if username and portfolio and stock:
-                manager.remove_stock_from_portfolio(username, portfolio, stock)
+                manager.add_stock_to_portfolio(username, portfolio, stock)
         
         elif choice == '6':
+            username = input("Enter username: ").strip()
+            portfolio = input("Enter portfolio name: ").strip()
+            stock = input("Enter stock symbol: ").strip()
+            if username and portfolio and stock:
+                manager.remove_stock_from_portfolio(username, portfolio, stock)
+        
+        elif choice == '7':
             username = input("Enter username: ").strip()
             if username:
                 manager.display_user_portfolios(username)
         
-        elif choice == '7':
+        elif choice == '8':
             username = input("Enter username: ").strip()
             portfolio = input("Enter portfolio name: ").strip()
             start = input("Enter start date (YYYY-MM-DD): ").strip()
@@ -287,7 +328,7 @@ def main():
             if username and portfolio and start and end:
                 manager.fetch_portfolio_data(username, portfolio, start, end)
         
-        elif choice == '8':
+        elif choice == '9':
             print("Goodbye!")
             break
         
