@@ -97,8 +97,8 @@ def query_metrics():
     try:
         connection = mysql.connector.connect(
             host='localhost',
-            user='root',
-            password='D4o9n1g7!',
+            user='admin',
+            password='password',
             database='stock_portfolio'
         )
 
