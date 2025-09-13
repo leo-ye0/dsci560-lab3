@@ -67,6 +67,22 @@ python3 stock_data_fillna.py
 2. **Backward filling**
 3. **Forward filling**
 
+### Stock Data Metrics
+
+**Interactive Menu:**
+```bash
+python3 stock_data_metrics.py
+```
+### Menu Options:
+1. **enter stock symbol** - Input stock symbol.
+2. **enter start date** - Input start date.
+3. **enter end date** - Input end date.
+4. **close_price** - Price change from start date to end date.
+5. **daily_return** - Average daily return from start date to end date.
+6. **cumulative_return** - Compounded return from the first available date.
+7. **volatility** - Rolling 30-day standard deviation of daily returns.
+
+
 ### Portfolio Manager
 
 **Command Line Interface:**
