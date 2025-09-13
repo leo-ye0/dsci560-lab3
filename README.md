@@ -41,6 +41,32 @@ python3 stock_data_fetcher.py
 1. **Sample Data** - Predefined tech stocks (AAPL, GOOGL, MSFT, TSLA, AMZN) for last 30 days
 2. **Custom Data** - User-specified symbols and date ranges (YYYY-MM-DD format)
 
+### Stock Data FillNA
+
+Note: Only run this file after running stock_data_fetcher.py
+
+**Command Line Interface:**
+```bash
+# Fill in missing data using interpolation
+python3 stock_data_fillna.py 1
+
+# Fill in missing data using back filling
+python3 stock_data_fillna.py 2
+
+# Fill in missing data using forward filling
+python3 stock_data_fillna.py 3
+```
+
+**Interactive Menu:**
+```bash
+python3 stock_data_fillna.py
+```
+
+**Options for filling in missing data** 
+1. **Interpolation**
+2. **Backward filling**
+3. **Forward filling**
+
 ### Portfolio Manager
 
 **Command Line Interface:**
