@@ -42,6 +42,12 @@ class PortfolioManager:
     
     def add_stock_to_portfolio(self, username, portfolio_name, stock_symbol):
         """Add stock to portfolio with validation"""
+        # Check for comma-separated symbols
+        if ',' in stock_symbol:
+            print(f"Error: Only one stock symbol allowed. Use separate commands for multiple stocks.")
+            print(f"Example: python3 portfolio_manager.py add {username} \"{portfolio_name}\" TSLA")
+            return False
+            
         if not self.stock_fetcher.validate_stock(stock_symbol):
             print(f"Invalid stock symbol: {stock_symbol}")
             return False
@@ -203,6 +209,8 @@ def main():
         
         if action == "create-user" and len(sys.argv) == 3:
             manager.user_manager.create_user(sys.argv[2])
+        elif action == "list-users" and len(sys.argv) == 2:
+            manager.user_manager.list_users()
         elif action == "create-portfolio" and len(sys.argv) == 4:
             manager.create_portfolio(sys.argv[2], sys.argv[3])
         elif action == "add" and len(sys.argv) == 5:
@@ -216,6 +224,7 @@ def main():
         else:
             print("Usage:")
             print("  python3 portfolio_manager.py create-user <username>")
+            print("  python3 portfolio_manager.py list-users")
             print("  python3 portfolio_manager.py create-portfolio <username> <portfolio_name>")
             print("  python3 portfolio_manager.py add <username> <portfolio_name> <stock>")
             print("  python3 portfolio_manager.py remove <username> <portfolio_name> <stock>")

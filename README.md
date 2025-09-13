@@ -48,6 +48,9 @@ python3 stock_data_fetcher.py
 # Create user
 python3 portfolio_manager.py create-user john
 
+# List all users
+python3 portfolio_manager.py list-users
+
 # Create portfolio for user
 python3 portfolio_manager.py create-portfolio john "My Portfolio"
 
