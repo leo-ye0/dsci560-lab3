@@ -135,7 +135,7 @@ def generate_training_csv():
     df_final = df_final.sort_values(['ticker', 'date']).reset_index(drop=True)
     
     # Step 5: Save to CSV
-    filename = 'processed_tech_stock_data.csv'
+    filename = 'data/processed_tech_stock_data.csv'
     df_final.to_csv(filename, index=False)
     
     print(f"\n✓ Dataset saved to {filename}")
