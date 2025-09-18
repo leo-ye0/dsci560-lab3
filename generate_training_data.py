@@ -5,16 +5,16 @@ from datetime import datetime
 import warnings
 warnings.filterwarnings("ignore")
 
-def fetch_stock_data(tickers, start_date, end_date):
+def fetch_stock_data(tickers):
     """Fetch stock data for multiple tickers"""
     all_data = []
     
-    print(f"Fetching {len(tickers)} tickers from {start_date} to {end_date}...")
+    print(f"Fetching {len(tickers)} tickers for last 10 years...")
     
     for ticker in tickers:
         try:
             stock = yf.Ticker(ticker)
-            data = stock.history(start=start_date, end=end_date)
+            data = stock.history(period="10y", auto_adjust=False)
             
             if not data.empty:
                 data = data.reset_index()
@@ -26,9 +26,10 @@ def fetch_stock_data(tickers, start_date, end_date):
                     'High': 'high_price', 
                     'Low': 'low_price',
                     'Close': 'close_price',
+                    'Adj Close': 'adj_close_price',
                     'Volume': 'volume'
                 })
-                data = data[['ticker', 'date', 'open_price', 'high_price', 'low_price', 'close_price', 'volume']]
+                data = data[['ticker', 'date', 'open_price', 'high_price', 'low_price', 'close_price', 'adj_close_price', 'volume']]
                 all_data.append(data)
             else:
                 print(f"✗ {ticker}: No data found")
@@ -115,11 +116,8 @@ def generate_training_csv():
         "PYPL","V","MA"
     ]
     
-    start_date = "2020-09-17"
-    end_date = "2025-09-17"
-    
-    # Step 1: Fetch raw data
-    df = fetch_stock_data(tickers, start_date, end_date)
+    # Step 1: Fetch raw data (using 10y period)
+    df = fetch_stock_data(tickers)
     
     if df.empty:
         print("No data fetched!")
