@@ -9,17 +9,17 @@ def fetch_stock_data(tickers, start_date, end_date):
     """Fetch stock data for multiple tickers"""
     all_data = []
     
-    print(f"Fetching data for {len(tickers)} tickers from {start_date} to {end_date}...")
+    print(f"Fetching {len(tickers)} tickers from {start_date} to {end_date}...")
     
     for ticker in tickers:
         try:
-            print(f"Fetching {ticker}...")
             stock = yf.Ticker(ticker)
             data = stock.history(start=start_date, end=end_date)
             
             if not data.empty:
                 data = data.reset_index()
                 data['ticker'] = ticker
+                
                 data = data.rename(columns={
                     'Date': 'date',
                     'Open': 'open_price',
@@ -30,7 +30,6 @@ def fetch_stock_data(tickers, start_date, end_date):
                 })
                 data = data[['ticker', 'date', 'open_price', 'high_price', 'low_price', 'close_price', 'volume']]
                 all_data.append(data)
-                print(f"✓ {ticker}: {len(data)} records")
             else:
                 print(f"✗ {ticker}: No data found")
                 
@@ -41,23 +40,21 @@ def fetch_stock_data(tickers, start_date, end_date):
 
 def fill_missing_data(df, method='interpolation'):
     """Fill missing data using different methods"""
-    print(f"\nFilling missing data using {method}...")
+    print(f"Filling missing data...")
     
     filled_data = []
     
     for ticker in df['ticker'].unique():
         ticker_data = df[df['ticker'] == ticker].copy()
         
-        # Create full date range
-        full_range = pd.date_range(start=ticker_data['date'].min(),
-                                 end=ticker_data['date'].max(),
-                                 freq='D')
+        # Create full business date range (excludes weekends)
+        full_range = pd.bdate_range(start=ticker_data['date'].min(),
+                                  end=ticker_data['date'].max())
         
         # Find missing dates
         missing_dates = full_range.difference(ticker_data['date'])
         
         if len(missing_dates) > 0:
-            print(f"Filling {len(missing_dates)} missing dates for {ticker}")
             
             # Create missing rows
             missing_rows = pd.DataFrame({
@@ -87,8 +84,8 @@ def fill_missing_data(df, method='interpolation'):
     return pd.concat(filled_data, ignore_index=True)
 
 def calculate_metrics(df):
-    """Calculate stock metrics for each ticker"""
-    print("\nCalculating stock metrics...")
+    """Calculate basic stock metrics for each ticker"""
+    print("Calculating metrics...")
     
     metrics_data = []
     
@@ -102,30 +99,9 @@ def calculate_metrics(df):
         ticker_data['cumulative_return'] = (1 + ticker_data['daily_return']).cumprod() - 1
         
         # Rolling volatility (30-day)
-        ticker_data['volatility_30d'] = ticker_data['daily_return'].rolling(window=30).std()
-        
-        # Price change from previous day
-        ticker_data['price_change'] = ticker_data['close_price'].diff()
-        ticker_data['price_change_pct'] = ticker_data['price_change'] / ticker_data['close_price'].shift(1) * 100
-        
-        # Moving averages
-        ticker_data['ma_7'] = ticker_data['close_price'].rolling(window=7).mean()
-        ticker_data['ma_30'] = ticker_data['close_price'].rolling(window=30).mean()
-        ticker_data['ma_90'] = ticker_data['close_price'].rolling(window=90).mean()
-        
-        # Volume metrics
-        ticker_data['volume_ma_30'] = ticker_data['volume'].rolling(window=30).mean()
-        ticker_data['volume_ratio'] = ticker_data['volume'] / ticker_data['volume_ma_30']
-        
-        # High-Low spread
-        ticker_data['hl_spread'] = ticker_data['high_price'] - ticker_data['low_price']
-        ticker_data['hl_spread_pct'] = ticker_data['hl_spread'] / ticker_data['close_price'] * 100
-        
-        # Day of week feature (0=Monday, 6=Sunday)
-        ticker_data['day_of_week'] = pd.to_datetime(ticker_data['date']).dt.dayofweek
+        ticker_data['volatility'] = ticker_data['daily_return'].rolling(window=30).std()
         
         metrics_data.append(ticker_data)
-        print(f"✓ Calculated metrics for {ticker}")
     
     return pd.concat(metrics_data, ignore_index=True)
 
@@ -149,11 +125,8 @@ def generate_training_csv():
         print("No data fetched!")
         return
     
-    print(f"\nRaw data: {len(df)} records")
-    
     # Step 2: Fill missing data
     df_filled = fill_missing_data(df, method='interpolation')
-    print(f"After filling: {len(df_filled)} records")
     
     # Step 3: Calculate metrics
     df_final = calculate_metrics(df_filled)
@@ -162,18 +135,13 @@ def generate_training_csv():
     df_final = df_final.sort_values(['ticker', 'date']).reset_index(drop=True)
     
     # Step 5: Save to CSV
-    filename = 'training_stock_data_complete.csv'
+    filename = 'processed_tech_stock_data.csv'
     df_final.to_csv(filename, index=False)
     
-    print(f"\n✓ Complete training data saved to {filename}")
-    print(f"Total records: {len(df_final)}")
-    print(f"Columns: {list(df_final.columns)}")
+    print(f"\n✓ Dataset saved to {filename}")
+    print(f"Records: {len(df_final)}, Tickers: {df_final['ticker'].nunique()}, Columns: {len(df_final.columns)}")
     print(f"Date range: {df_final['date'].min()} to {df_final['date'].max()}")
-    print(f"Tickers: {df_final['ticker'].nunique()}")
     
-    # Show sample
-    print(f"\nSample data:")
-    print(df_final[['ticker', 'date', 'close_price', 'daily_return', 'volatility_30d']].head(10))
     
     return filename
 
