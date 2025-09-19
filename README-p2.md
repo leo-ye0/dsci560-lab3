@@ -62,7 +62,7 @@ The system creates a dual-panel chart:
 - **Bottom Panel**: Portfolio drawdown periods (risk visualization)
 - **Format**: High-resolution PNG (300 DPI) suitable for reports
 
-![Portfolio Performance](../../data/plots/arima_portfolio_performance.png)
+![Portfolio Performance](data/plots/arima_portfolio_performance.png)
 
 *ARIMA + RSI + Bollinger Bands Strategy Performance*
 
