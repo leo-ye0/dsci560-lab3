@@ -42,13 +42,13 @@ COMBINED 3-INDICATOR STRATEGY RESULTS
 Indicators: ARIMA + Bollinger Bands + RSI
 =========================================================
 Initial Capital: $100,000.00
-Final Portfolio Value: $223,467.69
-Total Return: 123.47%
-Annualized Return: 75.46%
-Sharpe Ratio: 1.05
-Max Drawdown: -44.96%
-Volatility: 44.07%
-Estimated Trades: 150+
+Final Portfolio Value: $236,150.51
+Total Return: 136.15%
+Annualized Return: 82.37%
+Sharpe Ratio: 1.16
+Max Drawdown: -46.01%
+Volatility: 41.38%
+Estimated Trades: 2952
 Trading Days: 522
 ```
 
@@ -61,6 +61,10 @@ The system creates a dual-panel chart:
 - **Top Panel**: Portfolio value over time with initial value reference line
 - **Bottom Panel**: Portfolio drawdown periods (risk visualization)
 - **Format**: High-resolution PNG (300 DPI) suitable for reports
+
+![Portfolio Performance](../../data/plots/arima_portfolio_performance.png)
+
+*ARIMA + RSI + Bollinger Bands Strategy Performance*
 
 ### Strategy Advantages
 - **Diversified Signals**: Combines trend, volatility, and momentum analysis
