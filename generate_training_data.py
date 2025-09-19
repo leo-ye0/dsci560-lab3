@@ -48,7 +48,6 @@ def fill_missing_data(df, method='interpolation'):
     for ticker in df['ticker'].unique():
         ticker_data = df[df['ticker'] == ticker].copy()
         
-        # Create full business date range (excludes weekends)
         full_range = pd.bdate_range(start=ticker_data['date'].min(),
                                   end=ticker_data['date'].max())
         
@@ -116,23 +115,24 @@ def generate_training_csv():
         "PYPL","V","MA"
     ]
     
-    # Step 1: Fetch raw data (using 10y period)
     df = fetch_stock_data(tickers)
     
     if df.empty:
         print("No data fetched!")
         return
     
-    # Step 2: Fill missing data
     df_filled = fill_missing_data(df, method='interpolation')
     
-    # Step 3: Calculate metrics
     df_final = calculate_metrics(df_filled)
     
-    # Step 4: Clean and sort
     df_final = df_final.sort_values(['ticker', 'date']).reset_index(drop=True)
     
-    # Step 5: Save to CSV
+    df_final['date'] = pd.to_datetime(df_final['date']).dt.date
+    
+    numeric_cols = ['open_price', 'high_price', 'low_price', 'close_price', 'volume', 'daily_return', 'cumulative_return', 'volatility']
+    for col in numeric_cols:
+        df_final[col] = pd.to_numeric(df_final[col], errors='coerce')
+    
     filename = 'data/processed_tech_stock_data.csv'
     df_final.to_csv(filename, index=False)
     
