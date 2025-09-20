@@ -135,7 +135,7 @@ def run_lstm_backtest():
     volatility = portfolio_df['daily_return'].std() * np.sqrt(252) * 100
 
     print("\n" + "="*50)
-    print("COMBINED LSTM STRATEGY RESULTS")
+    print("LSTM STRATEGY RESULTS")
     print("Indicators: LSTM Prediction + Trend Filter (MA5) + Dynamic Position Sizing + Partial Sell")
     print("="*50)
     print(f"Initial Capital: ${initial_value:,.2f}")
@@ -166,7 +166,7 @@ def run_lstm_backtest():
     ax2.grid(True, alpha=0.3)
 
     plt.tight_layout()
-    plt.savefig('data/lstm_portfolio_performance.png', dpi=300, bbox_inches='tight')
+    plt.savefig('../../data/plot/lstm_portfolio_performance.png', dpi=300, bbox_inches='tight')
     plt.show()
 
     return final_value, total_return
