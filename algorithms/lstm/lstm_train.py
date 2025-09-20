@@ -73,8 +73,6 @@ def train_lstm(data_path="data/processed_tech_stock_data.csv",
                 "model_path": model_path
             })
 
-            print(f"✓ {ticker} model saved: {model_path}")
-
         except Exception as e:
             print(f"✗ {ticker}: Error - {e}")
             model_info.append({
