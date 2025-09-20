@@ -60,7 +60,6 @@ Trading Days: 522
 The system creates a dual-panel chart:
 - **Top Panel**: Portfolio value over time with initial value reference line
 - **Bottom Panel**: Portfolio drawdown periods (risk visualization)
-- **Format**: High-resolution PNG (300 DPI) suitable for reports
 
 ![Portfolio Performance](data/plots/arima_portfolio_performance.png)
 
@@ -147,6 +146,5 @@ Trading Days: 522
 The system creates a dual-panel chart:
 - **Top Panel**: Portfolio value over time with initial value reference line
 - **Bottom Panel**: Portfolio drawdown periods (risk visualization)
-- **Format**: High-resolution PNG (300 DPI) suitable for reports
 
 ![Portfolio Performance](data/plots/lstm_portfolio_performance.png)
