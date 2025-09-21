@@ -179,20 +179,17 @@ pip install pandas numpy matplotlib yfinance
 ```
 Moving Average Algorithm
 
+Simulate stock trading for AAPL
 Starting capital: 3030.3030303030305
 Capital after simulation: 2862.69556361915
 Amount of stock hold: 0
 Net loss: -167.60746668388038
 
+Simulate stock trading for ADBE
 Starting capital: 3030.3030303030305
 Capital after simulation: 2825.7282376357216
 Amount of stock hold: 0
 Net loss: -204.57479266730888
-
-Starting capital: 3030.3030303030305
-Capital after simulation: 2924.235088987708
-Amount of stock hold: 0
-Net loss: -106.06794131532251
 ...
 ```
 
