@@ -4,17 +4,18 @@ import pandas as pd
 from sklearn.preprocessing import MinMaxScaler
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM, Dense, Dropout, Input
+from sklearn.metrics import mean_squared_error, mean_absolute_error
 
-def create_dataset(series, time_step=60):
-    """Build sliding window dataset"""
+def create_dataset(series, time_step=120):
+    "Build sliding window dataset"
     X, y = [], []
     for i in range(len(series) - time_step):
         X.append(series[i:(i + time_step), 0])
         y.append(series[i + time_step, 0])
     return np.array(X), np.array(y)
 
-def build_lstm(time_step=60):
-    """Build LSTM model"""
+def build_lstm(time_step=120):
+    "Build LSTM model"
     model = Sequential([
         Input(shape=(time_step, 1)),
         LSTM(50, return_sequences=True),
@@ -26,8 +27,8 @@ def build_lstm(time_step=60):
     model.compile(optimizer='adam', loss='mse')
     return model
 
-def train_lstm(data_path="data/processed_tech_stock_data.csv",
-               time_step=60, epochs=20, batch_size=32):
+def train_lstm(data_path="../../data/processed_tech_stock_data.csv",
+               time_step=120, epochs=20, batch_size=32):
     
     # Load data
     df = pd.read_csv(data_path)
@@ -60,7 +61,14 @@ def train_lstm(data_path="data/processed_tech_stock_data.csv",
             # Build & train model
             model = build_lstm(time_step)
             model.fit(X_train, y_train, epochs=epochs, batch_size=batch_size, verbose=0)
+            y_pred = model.predict(X_test, verbose=0)
+            y_pred_rescaled = scaler.inverse_transform(y_pred.reshape(-1,1))
+            y_test_rescaled = scaler.inverse_transform(y_test.reshape(-1,1))
 
+            # mse rmse and mae
+            mse = mean_squared_error(y_test_rescaled, y_pred_rescaled)
+            mae = mean_absolute_error(y_test_rescaled, y_pred_rescaled)
+            rmse = np.sqrt(mse)
             # Save model only
             model_path = f"../../data/lstm/models/lstm_{ticker}.keras"
             model.save(model_path)
@@ -73,8 +81,11 @@ def train_lstm(data_path="data/processed_tech_stock_data.csv",
                 "model_path": model_path
             })
 
+            print(f"✓ {ticker} model saved: {model_path}")
+            print("MSE: {:.4f}, RMSE: {:.4f}, MAE: {:.4f}".format(mse, rmse, mae))
+
         except Exception as e:
-            print(f"{ticker}: Error - {e}")
+            print(f"✗ {ticker}: Error - {e}")
             model_info.append({
                 "ticker": ticker,
                 "train_size": 0,
