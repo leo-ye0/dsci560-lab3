@@ -5,7 +5,7 @@ import os
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
-def run_lstm_backtest(time_step=60):
+def run_lstm_backtest(time_step=120):
     #print("Running LSTM backtest (batch prediction mode)...")
     # Load data
     df = pd.read_csv("data/processed_tech_stock_data.csv")
