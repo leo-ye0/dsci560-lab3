@@ -148,3 +148,60 @@ The system creates a dual-panel chart:
 - **Bottom Panel**: Portfolio drawdown periods (risk visualization)
 
 ![Portfolio Performance](data/plots/lstm_portfolio_performance.png)
+
+## Moving Average Algorithm
+Simple trading system using 50-day moving average
+
+### Trading Logic (Buy)
+1. **50-Day Moving Average:** Buy stock when the current price is lower the 50-Day Moving Average
+2. **Current Capital >= 95%**: Buy stock when the current capital is 95% or more of the starting capital
+
+### Trading Logic (Buy)
+1. **Previous Buy > Current Price**: Sell when the price of the last stock bought is higher than the current stock price
+2. **Last Day Dump:** Sell all stocks at the end of trading period
+
+### How to Run
+```bash
+# 1. Generate stock data (33 tech stocks, 10 years)
+python3 generate_training_data.py
+
+# 2. Run Moving Average Algorithm
+cd algorithms/moving_average
+python3 moving_average.py
+```
+
+### Requirements
+```bash
+pip install pandas numpy matplotlib yfinance
+```
+
+### Expected Output
+```
+Moving Average Algorithm
+
+Starting capital: 3030.3030303030305
+Capital after simulation: 2862.69556361915
+Amount of stock hold: 0
+Net loss: -167.60746668388038
+
+Starting capital: 3030.3030303030305
+Capital after simulation: 2825.7282376357216
+Amount of stock hold: 0
+Net loss: -204.57479266730888
+
+Starting capital: 3030.3030303030305
+Capital after simulation: 2924.235088987708
+Amount of stock hold: 0
+Net loss: -106.06794131532251
+...
+```
+
+### Files Generated
+- `data/plots/ma_portfolio_performance.png` - Portfolio performance visualization
+
+### Generated Plot
+The system creates a dual-panel chart:
+- **Top Panel**: Portfolio value over time with initial value reference line
+- **Bottom Panel**: Portfolio drawdown periods (risk visualization)
+
+![Portfolio Performance](data/plots/ma_portfolio_performance.png)

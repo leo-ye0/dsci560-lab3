@@ -14,7 +14,7 @@ def sell(capital, price):
 
 def train_moving_avg(path):
     df = pd.read_csv(path)
-    print('Moving Average Model\n')
+    print('Moving Average Algorithm\n')
     
     tickers = df.ticker.unique()
     capital = initial_capital / len(tickers)
