@@ -78,19 +78,23 @@ def train_lstm(data_path="../../data/processed_tech_stock_data.csv",
                 "ticker": ticker,
                 "train_size": len(X_train),
                 "test_size": len(X_test),
-                "model_path": model_path
+                "model_path": model_path,
+                "MSE": mse,
+                "RMSE": rmse,
+                "MAE": mae,
             })
-
-            print(f"✓ {ticker} model saved: {model_path}")
             print("MSE: {:.4f}, RMSE: {:.4f}, MAE: {:.4f}".format(mse, rmse, mae))
 
         except Exception as e:
-            print(f"✗ {ticker}: Error - {e}")
+            print(f"{ticker}: Error - {e}")
             model_info.append({
                 "ticker": ticker,
                 "train_size": 0,
                 "test_size": 0,
-                "model_path": None
+                "model_path": None,
+                "MSE": 0,
+                "RMSE": 0,
+                "MAE": 0,
             })
 
     # Save summary
