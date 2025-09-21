@@ -5,7 +5,7 @@ import os
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import MinMaxScaler
 
-def run_lstm_backtest(time_step=90):
+def run_lstm_backtest(time_step=120):
     #print("Running LSTM backtest (batch prediction mode)...")
     # Load data
     df = pd.read_csv("data/processed_tech_stock_data.csv")
@@ -168,7 +168,6 @@ def run_lstm_backtest(time_step=90):
     max_drawdown = portfolio_df["drawdown"].min() * 100
     volatility = portfolio_df["daily_return"].std() * np.sqrt(252) * 100
 
-    print("\n" + "="*50)
     print("LSTM STRATEGY RESULTS")
     print("Indicators: Precomputed LSTM + MA5 + Stop Loss/Take Profit")
     print("="*50)

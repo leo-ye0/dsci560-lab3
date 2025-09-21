@@ -128,13 +128,13 @@ LSTM STRATEGY RESULTS
 Indicators: Precomputed LSTM + MA5 + Stop Loss/Take Profit
 ==================================================
 Initial Capital: $100,000.00
-Final Portfolio Value: $182,642.99
-Total Return: 82.64%
-Annualized Return: 52.38%
-Sharpe Ratio: 1.56
-Max Drawdown: -20.00%
-Volatility: 18.49%
-Estimated Trades: 963
+Final Portfolio Value: $222,971.09
+Total Return: 122.97%
+Annualized Return: 75.19%
+Sharpe Ratio: 1.67
+Max Drawdown: -19.88%
+Volatility: 23.75%
+Estimated Trades: 800
 Trading Days: 522
 ```
 
